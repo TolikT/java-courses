@@ -16,8 +16,6 @@ public class HelperBase {
         wd.findElement(locator).click();
     }
 
-
-
     protected void type(By locator, String text) {
         click(locator);
         if (text != null) {

@@ -44,4 +44,13 @@ public class ContactHelper extends HelperBase{
     public void initContactModification(){
         click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
     }
+
+    public boolean isThereAContact(){
+        return isElementPresent(By.cssSelector("#maintable > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(8) > a:nth-child(1) > img:nth-child(1)"));
+    }
+
+    public void createContact(ContactData contactData) {
+        fillContactForm(contactData, true);
+        submitContactCreation();
+    }
 }
