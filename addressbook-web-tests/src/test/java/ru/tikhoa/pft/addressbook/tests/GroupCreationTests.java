@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.GroupData;
 
+import java.util.List;
+
 public class GroupCreationTests extends TestBase {
 
     @Test
@@ -12,17 +14,17 @@ public class GroupCreationTests extends TestBase {
         // go to group page
         app.getNavigationHelper().goToGroupPage();
 
-        // number of checkboxes before
-        int before = app.getGroupHelper().getGroupCount();
+        // list of checkboxes before
+        List<GroupData> before =app.getGroupHelper().getGroupList();
 
         // create a group
         app.getGroupHelper().createGroup(new GroupData("test1", null, null));
 
-        // number of checkboxes after
-        int after = app.getGroupHelper().getGroupCount();
+        // list of checkboxes after
+        List<GroupData> after =app.getGroupHelper().getGroupList();
 
-        // compare before and after values
-        Assert.assertEquals(before + 1, after);
+        // compare before and after size
+        Assert.assertEquals(before.size() + 1, after.size());
 
     }
 
