@@ -20,7 +20,7 @@ public class GroupDeletionTests extends TestBase {
         }
 
         // list of checkboxes before
-        List<GroupData> before =app.getGroupHelper().getGroupList();
+        List<GroupData> before = app.getGroupHelper().getGroupList();
 
         // delete a group and go back to group page
         app.getGroupHelper().selectGroup(before.size() - 1);
@@ -28,10 +28,17 @@ public class GroupDeletionTests extends TestBase {
         app.getGroupHelper().returnToGroupPage();
 
         // list of checkboxes after
-        List<GroupData> after =app.getGroupHelper().getGroupList();
+        List<GroupData> after = app.getGroupHelper().getGroupList();
 
         // compare before and after size
         Assert.assertEquals(before.size() - 1, after.size());
+
+        // old list without removed list
+        before.remove(before.size() - 1);
+
+        // compare lists
+        Assert.assertEquals(before, after);
+
     }
 
 }

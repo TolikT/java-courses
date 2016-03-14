@@ -15,13 +15,13 @@ public class GroupCreationTests extends TestBase {
         app.getNavigationHelper().goToGroupPage();
 
         // list of checkboxes before
-        List<GroupData> before =app.getGroupHelper().getGroupList();
+        List<GroupData> before = app.getGroupHelper().getGroupList();
 
         // create a group
         app.getGroupHelper().createGroup(new GroupData("test1", null, null));
 
         // list of checkboxes after
-        List<GroupData> after =app.getGroupHelper().getGroupList();
+        List<GroupData> after = app.getGroupHelper().getGroupList();
 
         // compare before and after size
         Assert.assertEquals(before.size() + 1, after.size());

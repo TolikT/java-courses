@@ -21,7 +21,7 @@ public class GroupModificationTests extends TestBase{
         }
 
         // list of checkboxes before
-        List<GroupData> before =app.getGroupHelper().getGroupList();
+        List<GroupData> before = app.getGroupHelper().getGroupList();
 
         // modify a group and go back to group page
         app.getGroupHelper().selectGroup(before.size() - 1);
@@ -31,7 +31,7 @@ public class GroupModificationTests extends TestBase{
         app.getGroupHelper().returnToGroupPage();
 
         // list of checkboxes after
-        List<GroupData> after =app.getGroupHelper().getGroupList();
+        List<GroupData> after = app.getGroupHelper().getGroupList();
 
         // compare before and after size
         Assert.assertEquals(before.size(), after.size());
