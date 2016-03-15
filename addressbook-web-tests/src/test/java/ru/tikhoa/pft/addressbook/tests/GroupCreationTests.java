@@ -29,12 +29,7 @@ public class GroupCreationTests extends TestBase {
         Assert.assertEquals(before.size() + 1, after.size());
 
         // new id is max id, so find max
-        int max = 0;
-        for (GroupData g : after) {
-            if (g.getId() > max) {
-                max = g.getId();
-            }
-        }
+        int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
 
         // compare new and old lists excluding the order
         group.setId(max);
