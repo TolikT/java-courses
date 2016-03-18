@@ -19,7 +19,7 @@ public class GroupDeletionTests extends TestBase {
             app.getGroupHelper().createGroup(new GroupData("test1", null, null));
         }
 
-        // list of checkboxes before
+        // list of groups before
         List<GroupData> before = app.getGroupHelper().getGroupList();
 
         // delete a group and go back to group page
@@ -27,7 +27,7 @@ public class GroupDeletionTests extends TestBase {
         app.getGroupHelper().deleteSelectedGroups();
         app.getGroupHelper().returnToGroupPage();
 
-        // list of checkboxes after
+        // list of groups after
         List<GroupData> after = app.getGroupHelper().getGroupList();
 
         // compare before and after size
