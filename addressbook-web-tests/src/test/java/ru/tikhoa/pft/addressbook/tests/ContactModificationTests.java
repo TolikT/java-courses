@@ -26,7 +26,7 @@ public class ContactModificationTests extends TestBase{
         List<ContactData> before = app.getContactHelper().getContactList();
 
         // go to "add new" page
-        app.getContactHelper().initContactModification(1);
+        app.getContactHelper().initContactModification(before.size());
 
         // fill all data
         ContactData contact = new ContactData(before.get(before.size() - 1).getId(), "Vladimir", "Alexandrovich",
@@ -53,5 +53,5 @@ public class ContactModificationTests extends TestBase{
         Assert.assertEquals(before, after);
 
     }
-    
+
 }

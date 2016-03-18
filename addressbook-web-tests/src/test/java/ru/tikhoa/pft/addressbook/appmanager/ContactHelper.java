@@ -59,7 +59,7 @@ public class ContactHelper extends HelperBase{
         submitContactCreation();
     }
 
-    // return list of groups on the page
+    // return list of contacts on the page
     public List<ContactData> getContactList() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         WebElement table = wd.findElement(By.xpath("//*[@id=\"maintable\"]"));
