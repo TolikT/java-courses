@@ -15,6 +15,14 @@ public class GroupHelper extends HelperBase{
         super(wd);
     }
 
+    public void modifyGroup(int index, GroupData group) {
+        selectGroup(index);
+        initGroupModification();
+        fillGroupForm(group);
+        submitGroupModification();
+        returnToGroupPage();
+    }
+
     public void returnToGroupPage() {
         wd.findElement(By.linkText("group page")).click();
     }
