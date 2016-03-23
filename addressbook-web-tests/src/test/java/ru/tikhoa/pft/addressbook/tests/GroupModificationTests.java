@@ -1,12 +1,13 @@
 package ru.tikhoa.pft.addressbook.tests;
 
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.GroupData;
+import ru.tikhoa.pft.addressbook.model.Groups;
 
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupModificationTests extends TestBase{
 
@@ -27,7 +28,7 @@ public class GroupModificationTests extends TestBase{
     public void testModificationGroup() {
 
         // list of groups before
-        Set<GroupData> before = app.group().all();
+        Groups before = app.group().all();
 
         // preconditions are present, set is not empty
         // random group
@@ -39,15 +40,13 @@ public class GroupModificationTests extends TestBase{
         app.group().modify(group);
 
         // list of groups after
-        Set<GroupData> after = app.group().all();
+        Groups after = app.group().all();
 
         // compare before and after size
-        Assert.assertEquals(before.size(), after.size());
+        assertThat(after.size(), equalTo(before.size()));
 
-        // check using sort
-        before.remove(modifiedGroup);
-        before.add(group);
-        Assert.assertEquals(before, after);
+        // check
+        assertThat(after, equalTo(before.without(modifiedGroup).withAdded(group)));
 
     }
 
