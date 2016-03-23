@@ -4,8 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.GroupData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class GroupCreationTests extends TestBase {
 
@@ -16,27 +15,25 @@ public class GroupCreationTests extends TestBase {
         app.goTo().groupPage();
 
         // list of groups before
-        List<GroupData> before = app.group().list();
+        Set<GroupData> before = app.group().all();
 
         // create a group
         GroupData group = new GroupData().withName("test2");
         app.group().create(group);
 
         // list of groups after
-        List<GroupData> after = app.group().list();
+        Set<GroupData> after = app.group().all();
 
         // compare before and after size
         Assert.assertEquals(before.size() + 1, after.size());
 
         // new id is max id, so find max
-        int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
+        //int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
+        int max = after.stream().mapToInt((g) -> g.getId()).max().getAsInt();
 
         // compare new and old lists using sort
         group.withId(max);
         before.add(group);
-        Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
-        before.sort(byId);
-        after.sort(byId);
         Assert.assertEquals(after, before);
     }
 
