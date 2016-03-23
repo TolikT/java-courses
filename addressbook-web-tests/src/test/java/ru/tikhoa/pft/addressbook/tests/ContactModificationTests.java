@@ -13,11 +13,11 @@ public class ContactModificationTests extends TestBase{
     public void testContactModification() {
 
         // go to home page
-        app.getNavigationHelper().goToHomePage();
+        app.goTo().goToHomePage();
 
         // check contact presenting
         if (! app.getContactHelper().isThereAContact()){
-            app.getNavigationHelper().goToContactPage();
+            app.goTo().goToContactPage();
             app.getContactHelper().createContact(new ContactData("Vladimir", "Alexandrovich",
                     "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", "test1"));
         }

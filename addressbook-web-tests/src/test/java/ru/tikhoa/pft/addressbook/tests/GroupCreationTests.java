@@ -13,17 +13,17 @@ public class GroupCreationTests extends TestBase {
     public void testGroupCreation() {
 
         // go to group page
-        app.getNavigationHelper().goToGroupPage();
+        app.goTo().groupPage();
 
         // list of groups before
-        List<GroupData> before = app.getGroupHelper().getGroupList();
+        List<GroupData> before = app.group().list();
 
         // create a group
-        GroupData group = new GroupData("test1", null, null);
-        app.getGroupHelper().createGroup(group);
+        GroupData group = new GroupData().withName("test2");
+        app.group().create(group);
 
         // list of groups after
-        List<GroupData> after = app.getGroupHelper().getGroupList();
+        List<GroupData> after = app.group().list();
 
         // compare before and after size
         Assert.assertEquals(before.size() + 1, after.size());
@@ -32,7 +32,7 @@ public class GroupCreationTests extends TestBase {
         int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
 
         // compare new and old lists using sort
-        group.setId(max);
+        group.withId(max);
         before.add(group);
         Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
         before.sort(byId);
