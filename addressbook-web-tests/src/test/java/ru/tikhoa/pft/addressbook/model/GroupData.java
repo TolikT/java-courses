@@ -54,7 +54,6 @@ public class GroupData {
 
     public GroupData withHeader(String header) {
         this.header = header;
-
         return this;
     }
 

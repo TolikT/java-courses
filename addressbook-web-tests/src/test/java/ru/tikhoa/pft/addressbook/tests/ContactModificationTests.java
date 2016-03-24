@@ -13,33 +13,33 @@ public class ContactModificationTests extends TestBase{
     public void testContactModification() {
 
         // go to home page
-        app.goTo().goToHomePage();
+        app.goTo().homePage();
 
         // check contact presenting
-        if (! app.getContactHelper().isThereAContact()){
+        if (! app.contact().isThereAContact()){
             app.goTo().goToContactPage();
-            app.getContactHelper().createContact(new ContactData("Vladimir", "Alexandrovich",
+            app.contact().createContact(new ContactData("Vladimir", "Alexandrovich",
                     "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", "test1"));
         }
 
         // list of contacts before
-        List<ContactData> before = app.getContactHelper().getContactList();
+        List<ContactData> before = app.contact().getContactList();
 
         // go to "add new" page
-        app.getContactHelper().initContactModification(before.size());
+        app.contact().initContactModificationByNumber(before.size());
 
         // fill all data
         ContactData contact = new ContactData(before.get(before.size() - 1).getId(), "Vladimir", "Alexandrovich",
                 "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", null);
-        app.getContactHelper().fillContactForm(contact, false);
+        app.contact().fillContactForm(contact, false);
 
         // click "enter" button
-        app.getContactHelper().submitContactModification();
+        app.contact().submitContactModification();
 
         // redirect to home page
 
         // list of contacts after
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().getContactList();
 
         // compare before and after size
         Assert.assertEquals(before.size(), after.size());

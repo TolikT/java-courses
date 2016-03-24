@@ -14,7 +14,7 @@ public class ContactCreationTests extends TestBase{
 
         // now we are on the home page
         // list of contacts before
-        List<ContactData> before = app.getContactHelper().getContactList();
+        List<ContactData> before = app.contact().getContactList();
 
         // go to "add new" tab
         app.goTo().goToContactPage();
@@ -24,12 +24,12 @@ public class ContactCreationTests extends TestBase{
                  null, "vladimir.drobyshev@emc.com", "SaintP", "test1");
 
         // type all information in contact form
-        app.getContactHelper().createContact(contact);
+        app.contact().createContact(contact);
 
         // redirect to home page happens automatically after creation
 
         // list of contacts after
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().getContactList();
 
         // compare before and after size
         Assert.assertEquals(before.size() + 1, after.size());
@@ -38,7 +38,7 @@ public class ContactCreationTests extends TestBase{
         int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
 
         // compare new and old lists using sort
-        contact.setId(max);
+        contact.withId(max);
         before.add(contact);
         Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
         before.sort(byId);
