@@ -1,57 +1,56 @@
 package ru.tikhoa.pft.addressbook.tests;
 
-import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.ContactData;
+import ru.tikhoa.pft.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase{
 
-    @Test
-    public void testContactModification() {
+    @BeforeMethod
+    public void ensurePreconditions(){
 
         // go to home page
         app.goTo().homePage();
 
-        // check contact presenting
-        if (! app.contact().isThereAContact()){
-            app.goTo().goToContactPage();
-            app.contact().createContact(new ContactData("Vladimir", "Alexandrovich",
-                    "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", "test1"));
+        // if there are no groups - create one
+        if (app.contact().all().size() == 0){
+            app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
+                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
         }
 
+    }
+
+    @Test
+    public void testContactModification() {
+
         // list of contacts before
-        List<ContactData> before = app.contact().getContactList();
+        Contacts before = app.contact().all();
 
-        // go to "add new" page
-        app.contact().initContactModificationByNumber(before.size());
+        // preconditions are present, set is not empty
+        // random contact
+        ContactData modifiedContact = before.iterator().next();
 
-        // fill all data
-        ContactData contact = new ContactData(before.get(before.size() - 1).getId(), "Vladimir", "Alexandrovich",
-                "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", null);
-        app.contact().fillContactForm(contact, false);
+        // modify with created data
+        ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("Anatoly").withLastname("Tikhomirov")
+                .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP");
 
-        // click "enter" button
-        app.contact().submitContactModification();
+        app.contact().modify(modifiedContact.getId(), contact);
 
-        // redirect to home page
-
-        // list of contacts after
-        List<ContactData> after = app.contact().getContactList();
+        // go to home page
+        app.goTo().homePage();
 
         // compare before and after size
-        Assert.assertEquals(before.size(), after.size());
+        assertThat(app.contact().count(), equalTo(before.size()));
 
-        // check using sort
-        before.remove(before.size() - 1);
-        before.add(contact);
-        Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(before, after);
+        // set of contacts after
+        Contacts after = app.contact().all();
 
+        // check equality of sets
+        assertThat(before.without(modifiedContact).withAdded(contact), equalTo(after));
     }
 
 }

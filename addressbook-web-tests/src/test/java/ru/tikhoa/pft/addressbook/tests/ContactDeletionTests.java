@@ -1,48 +1,53 @@
 package ru.tikhoa.pft.addressbook.tests;
 
-import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.ContactData;
+import ru.tikhoa.pft.addressbook.model.Contacts;
 
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactDeletionTests extends TestBase{
+
+    @BeforeMethod
+    public void ensurePreconditions(){
+
+        // go to home page
+        app.goTo().homePage();
+
+        // if there are no groups - create one
+        if (app.contact().all().size() == 0){
+            app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
+                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
+        }
+
+    }
 
     @Test
     public void testContactDeletion() {
 
-        // home page contains list of all contacts
+        // list of groups before
+        Contacts before = app.contact().all();
+
+        // preconditions are present, set is not empty
+        // random contact
+        ContactData deletedContact = before.iterator().next();
+
+        // delete a contact
+        app.contact().delete(deletedContact);
+
+        // go to home page
         app.goTo().homePage();
 
-        // if there is no contact - create it
-        if (! app.contact().isThereAContact()){
-            app.goTo().goToContactPage();
-            app.contact().createContact(new ContactData("Vladimir", "Alexandrovich",
-                    "Drobyshev", "Tolsty", "vladimir.drobyshev@emc.com", "SaintP", "test1"));
-        }
-
-        // list of contacts before
-        List<ContactData> before = app.contact().getContactList();
-
-        // go to custom (before.size()) contact in the list
-        app.contact().initContactModificationByNumber(before.size());
-
-        // click "delete" button
-        app.contact().submitContactDeletion();
-
-        // redirect to home page
+        // compare before and after size
+        assertThat(app.contact().count(), equalTo(before.size() - 1));
 
         // list of contacts after
-        List<ContactData> after = app.contact().getContactList();
-
-        // compare before and after size
-        Assert.assertEquals(before.size() - 1, after.size());
-
-        // old list without removed list
-        before.remove(before.size() - 1);
+        Contacts after = app.contact().all();
 
         // compare lists
-        Assert.assertEquals(before, after);
+        assertThat(after, equalTo(before.without(deletedContact)));
 
     }
 

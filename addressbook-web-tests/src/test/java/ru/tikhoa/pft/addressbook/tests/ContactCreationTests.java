@@ -1,11 +1,11 @@
 package ru.tikhoa.pft.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.ContactData;
+import ru.tikhoa.pft.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase{
 
@@ -14,36 +14,34 @@ public class ContactCreationTests extends TestBase{
 
         // now we are on the home page
         // list of contacts before
-        List<ContactData> before = app.contact().getContactList();
+        Contacts before = app.contact().all();
 
         // go to "add new" tab
         app.goTo().goToContactPage();
 
         // create contact as object
-        ContactData contact = new ContactData("Anatoly", "Tikhomirov", "Alexandrovich",
-                 null, "vladimir.drobyshev@emc.com", "SaintP", "test1");
+        ContactData contact = new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
+                .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com")
+                .withAddress("SaintP").withGroup("test1");
 
         // type all information in contact form
-        app.contact().createContact(contact);
+        app.contact().create(contact);
 
-        // redirect to home page happens automatically after creation
-
-        // list of contacts after
-        List<ContactData> after = app.contact().getContactList();
+        // go to home page
+        app.goTo().homePage();
 
         // compare before and after size
-        Assert.assertEquals(before.size() + 1, after.size());
+        assertThat(app.contact().count(), equalTo(before.size() + 1));
+
+        // set of contacts after
+        Contacts after = app.contact().all();
 
         // find max id (from checkboxes)
         int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
 
-        // compare new and old lists using sort
+        // compare new and old sets
         contact.withId(max);
-        before.add(contact);
-        Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(after, before);
+        assertThat(after, equalTo(before.withAdded(contact)));
 
     }
 

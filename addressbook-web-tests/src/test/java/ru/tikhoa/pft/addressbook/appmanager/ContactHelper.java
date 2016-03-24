@@ -55,14 +55,45 @@ public class ContactHelper extends HelperBase{
         return isElementPresent(By.cssSelector("#maintable > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(8) > a:nth-child(1) > img:nth-child(1)"));
     }
 
-    public void createContact(ContactData contactData) {
+    public void create(ContactData contactData) {
         fillContactForm(contactData, true);
         submitContactCreation();
         contactCache = null;
     }
 
+    public void delete(int number) {
+        // go to custom (before.size()) contact in the list
+        initContactModificationByNumber(number);
+
+        // click "delete" button
+        submitContactDeletion();
+
+        contactCache = null;
+    }
+
+    public void delete(ContactData contact) {
+        // go to custom (before.size()) contact in the list
+        initContactModificationById(contact.getId());
+
+        // click "delete" button
+        submitContactDeletion();
+
+        contactCache = null;
+    }
+
+    public void modify(int id, ContactData contact) {
+
+        initContactModificationById(id);
+
+        // fill all data
+        fillContactForm(contact, false);
+
+        // click "enter" button
+        submitContactModification();
+    }
+
     // return list of contacts on the page
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         WebElement table = wd.findElement(By.xpath("//*[@id=\"maintable\"]"));
         List<WebElement> rows = table.findElements(By.tagName("tr"));
@@ -75,6 +106,10 @@ public class ContactHelper extends HelperBase{
             contacts.add(contact);
         }
         return contacts;
+    }
+
+    public int count() {
+        return wd.findElements(By.name("selected[]")).size();
     }
 
     private Contacts contactCache = null;
@@ -112,7 +147,7 @@ public class ContactHelper extends HelperBase{
 
     }
 
-    private void initContactModificationById(int id) {
+    public void initContactModificationById(int id) {
         WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));
         WebElement row = checkbox.findElement(By.xpath("./../.."));
         List<WebElement> cells = row.findElements(By.tagName("td"));
