@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import ru.tikhoa.pft.addressbook.model.GroupData;
 import ru.tikhoa.pft.addressbook.model.Groups;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,13 @@ public class GroupHelper extends HelperBase{
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
+        groupCache = null;
+        returnToGroupPage();
+    }
+
+    public void delete(int index) {
+        selectGroup(index);
+        deleteSelectedGroups();
         groupCache = null;
         returnToGroupPage();
     }
@@ -53,6 +61,10 @@ public class GroupHelper extends HelperBase{
         click(By.name("delete"));
     }
 
+    public void selectGroup(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
+    }
+
     public void selectGroupById(int id) {
         wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
@@ -71,6 +83,26 @@ public class GroupHelper extends HelperBase{
         submitGroupCreation();
         groupCache = null;
         returnToGroupPage();
+    }
+
+    public boolean isThereAGroup() {
+        return isElementPresent(By.name("selected[]"));
+    }
+
+    public int count() {
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
+    // return list of groups on the page
+    public List<GroupData> list() {
+        List<GroupData> groups = new ArrayList<GroupData>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            String name = element.getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            groups.add(new GroupData().withId(id).withName(name));
+        }
+        return groups;
     }
 
     private Groups groupCache = null;

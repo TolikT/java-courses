@@ -22,19 +22,41 @@ public class GroupCreationTests extends TestBase {
         GroupData group = new GroupData().withName("test2");
         app.group().create(group);
 
+        // compare before and after size
+        assertThat(app.group().count(), equalTo(before.size() + 1));
+
         // list of groups after
         Groups after = app.group().all();
-
-        // compare before and after size
-        assertThat(after.size(), equalTo(before.size() + 1));
 
         // new id is max id, so find max
         //int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
         int max = after.stream().mapToInt((g) -> g.getId()).max().getAsInt();
 
-        // compare new and old lists using sort
-        assertThat(after, equalTo(
-                before.withAdded(group.withId(max))));
+        // compare new and old lists
+        assertThat(after, equalTo(before.withAdded(group.withId(max))));
+    }
+
+    @Test
+    public void testBadGroupCreation() {
+
+        // go to group page
+        app.goTo().groupPage();
+
+        // list of groups before
+        Groups before = app.group().all();
+
+        // create a group
+        GroupData group = new GroupData().withName("test2'");
+        app.group().create(group);
+
+        // compare before and after size
+        assertThat(app.group().count(), equalTo(before.size()));
+
+        // list of groups after
+        Groups after = app.group().all();
+
+        // compare new and old lists
+        assertThat(after, equalTo(before));
     }
 
 }

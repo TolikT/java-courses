@@ -36,11 +36,11 @@ public class GroupDeletionTests extends TestBase {
         // delete a group and go back to group page
         app.group().delete(deletedGroup);
 
+        // compare before and after size
+        assertThat(app.group().count(), equalTo(before.size() - 1));
+
         // list of groups after
         Groups after = app.group().all();
-
-        // compare before and after size
-        assertThat(after.size(), equalTo(before.size() - 1));
 
         // compare sets of groups
         assertThat(after, equalTo(before.without(deletedGroup)));
