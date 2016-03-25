@@ -169,8 +169,9 @@ public class ContactHelper extends HelperBase{
 
     public String getContactDetailsById(int id) {
         wd.findElement(By.xpath(String.format("//input[@value='%s']/../../td[7]/a", id))).click();
-        String visibleText = wd.findElement(By.id("content")).getText().replaceAll("\n+", "\n")
-                .replaceAll("[WMH]: ", "").replaceAll(" \\(www.*\\)", "");
+        String visibleText = wd.findElement(By.id("content")).getText()
+                .replaceAll("(Member of.*|Notice:.*|test.*|[WMH]: | \\(www.*\\))", "")
+                .replaceAll("\n+", "\n");
         wd.navigate().back();
         return visibleText;
     }

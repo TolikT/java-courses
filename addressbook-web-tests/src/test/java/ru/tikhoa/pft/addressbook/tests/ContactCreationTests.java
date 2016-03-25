@@ -22,7 +22,7 @@ public class ContactCreationTests extends TestBase{
         // create contact as object
         ContactData contact = new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
                 .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com")
-                .withAddress("SaintP").withGroup("test1");
+                .withGroup("test1");
 
         // type all information in contact form
         app.contact().create(contact);

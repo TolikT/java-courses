@@ -72,7 +72,7 @@ public class ContactInformationTests extends TestBase{
                 contact.getAddress(), cleanedSpaces(contact.getHomePhone()), cleanedSpaces(contact.getMobilePhone()),
                 cleanedSpaces(contact.getWorkPhone()), cleanedEmail(contact.getEmail()))
                 .stream().filter((s) -> ! s.equals(""))
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining("\n")) + "\n";
     }
 
     private static String cleanedPhone(String phone){

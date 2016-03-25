@@ -19,7 +19,7 @@ public class ContactModificationTests extends TestBase{
         // if there are no groups - create one
         if (app.contact().all().size() == 0){
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
-                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
+                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com"));
         }
 
     }
