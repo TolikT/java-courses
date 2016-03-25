@@ -129,9 +129,12 @@ public class ContactHelper extends HelperBase{
             String name = cells.get(2).getText();
             String lastName = cells.get(1).getText();
             int id = Integer.parseInt(rows.get(i).findElement(By.tagName("input")).getAttribute("value"));
-            String[] phones = cells.get(5).getText().split("\n");
+            String address = cells.get(3).getText();
+            String email = cells.get(4).getText();
+            String allPhones = cells.get(5).getText();
+
             contactCache.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName)
-                    .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+                    .withAllPhones(allPhones).withEmail(email).withAddress(address));
         }
         return contactCache;
     }
@@ -140,12 +143,16 @@ public class ContactHelper extends HelperBase{
         initContactModificationById(contact.getId());
         String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
         String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+        String middlename = wd.findElement(By.name("middlename")).getAttribute("value");
         String home = wd.findElement(By.name("home")).getAttribute("value");
         String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
         String work = wd.findElement(By.name("work")).getAttribute("value");
+        String email = wd.findElement(By.name("email")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getAttribute("value");
         wd.navigate().back();
         return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
-                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
+                .withEmail(email).withAddress(address).withMiddlename(middlename);
 
     }
 
@@ -158,5 +165,13 @@ public class ContactHelper extends HelperBase{
         //wd.findElement(By.xpath(String.format("//input[@value='%s']/../../td[8]/a", id))).click();
         //wd.findElement(By.xpath(String.format("//tr[.//input[@value='%s']]/td[8]/a", id))).click();
         //wd.findElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", id))).click();
+    }
+
+    public String getContactDetailsById(int id) {
+        wd.findElement(By.xpath(String.format("//input[@value='%s']/../../td[7]/a", id))).click();
+        String visibleText = wd.findElement(By.id("content")).getText().replaceAll("\n+", "\n")
+                .replaceAll("[WMH]: ", "").replaceAll(" \\(www.*\\)", "");
+        wd.navigate().back();
+        return visibleText;
     }
 }
