@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.ContactData;
 import ru.tikhoa.pft.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -19,10 +21,12 @@ public class ContactCreationTests extends TestBase{
         // go to "add new" tab
         app.goTo().goToContactPage();
 
+        File photo = new File("src/test/resources/picture.jpg");
+
         // create contact as object
         ContactData contact = new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
                 .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com")
-                .withGroup("test1");
+                .withGroup("test1").withPhoto(photo);
 
         // type all information in contact form
         app.contact().create(contact);

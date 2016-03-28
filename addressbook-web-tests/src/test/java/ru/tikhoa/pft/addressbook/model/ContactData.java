@@ -1,6 +1,8 @@
 package ru.tikhoa.pft.addressbook.model;
 
 
+import java.io.File;
+
 public class ContactData {
     private String firstname;
     private String middlename;
@@ -14,6 +16,7 @@ public class ContactData {
     private String workPhone;
     private String allPhones;
     private int id;
+    private File photo;
 
     public String getFirstname(){
         return  firstname;
@@ -53,6 +56,9 @@ public class ContactData {
     }
     public String getAllPhones() {
         return allPhones;
+    }
+    public File getPhoto() {
+        return photo;
     }
 
     public ContactData withId(int id) {
@@ -101,6 +107,10 @@ public class ContactData {
     }
     public ContactData withAllPhones(String allPhones) {
         this.allPhones = allPhones;
+        return this;
+    }
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
         return this;
     }
 
