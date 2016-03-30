@@ -1,24 +1,39 @@
 package ru.tikhoa.pft.addressbook.model;
 
 
+import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 import java.io.File;
 
 @XStreamAlias("contact")
 public class ContactData {
+    @Expose
     private String firstname;
+    @XStreamOmitField
     private String middlename;
+    @Expose
     private String lastname;
+    @XStreamOmitField
     private String nickname;
+    @XStreamOmitField
     private String email;
+    @XStreamOmitField
     private String address;
+    @XStreamOmitField
     private String group;
+    @XStreamOmitField
     private String homePhone;
+    @XStreamOmitField
     private String mobilePhone;
+    @XStreamOmitField
     private String workPhone;
+    @XStreamOmitField
     private String allPhones;
+    @XStreamOmitField
     private int id;
+    @XStreamOmitField
     private File photo;
 
     public String getFirstname(){
