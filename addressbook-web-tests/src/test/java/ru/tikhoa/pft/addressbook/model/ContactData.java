@@ -21,7 +21,7 @@ public class ContactData {
     private String email;
     @XStreamOmitField
     private String address;
-    @XStreamOmitField
+    @Expose
     private String group;
     @XStreamOmitField
     private String homePhone;
