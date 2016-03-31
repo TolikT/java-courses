@@ -56,7 +56,8 @@ public class ContactCreationTests extends TestBase{
     @Test(dataProvider = "validContactsFromJson")
     public void testContactCreation(ContactData contact) {
 
-        // now we are on the home page
+        app.goTo().homePage();
+
         // list of contacts before
         Contacts before = app.contact().all();
 
