@@ -11,6 +11,7 @@ dependencies{
     compile 'com.beust:jcommander:1.48'
     compile 'com.thoughtworks.xstream:xstream-distribution:1.4.9'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
 }
 
 task testGroups(type: Test) {
@@ -18,10 +19,10 @@ task testGroups(type: Test) {
         suites 'src/test/resources/testng-groups.xml'
     }
     if (project.hasProperty('browser')){
-        SystemProperty 'browser', "${browser}"
+        systemProperty 'browser', "${browser}"
     }
-    if (project.hasProperty('browser')){
-        SystemProperty 'target', "${target}"
+    if (project.hasProperty('target')){
+        systemProperty 'target', "${target}"
     }
 }
 
@@ -30,9 +31,9 @@ task testContacts(type: Test) {
         suites 'src/test/resources/testng-contacts.xml'
     }
     if (project.hasProperty('browser')){
-        SystemProperty 'browser', "${browser}"
+        systemProperty 'browser', "${browser}"
     }
-    if (project.hasProperty('browser')){
-        SystemProperty 'target', "${target}"
+    if (project.hasProperty('target')){
+        systemProperty 'target', "${target}"
     }
 }
