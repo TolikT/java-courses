@@ -4,37 +4,72 @@ package ru.tikhoa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 
 @XStreamAlias("contact")
+@Entity
+@Table(name="addressbook")
 public class ContactData {
+
     @Expose
+    @Column(name="firstname")
     private String firstname;
+
     @XStreamOmitField
+    @Transient
     private String middlename;
+
     @Expose
+    @Column(name="lastname")
     private String lastname;
+
     @XStreamOmitField
+    @Transient
     private String nickname;
+
     @XStreamOmitField
+    @Transient
     private String email;
+
     @XStreamOmitField
+    @Transient
     private String address;
+
     @Expose
+    @Transient
     private String group;
+
     @XStreamOmitField
+    @Column(name="home")
+    @Type(type="text")
     private String homePhone;
+
     @XStreamOmitField
+    @Column(name="mobile")
+    @Type(type="text")
     private String mobilePhone;
+
     @XStreamOmitField
+    @Column(name="work")
+    @Type(type="text")
     private String workPhone;
+
     @XStreamOmitField
+    @Transient
     private String allPhones;
+
     @XStreamOmitField
+    @Id
+    @Column(name="id")
     private int id;
+
     @XStreamOmitField
-    private File photo;
+    @Column(name="photo")
+    @Type(type="text")
+    private String photo;
 
     public String getFirstname(){
         return  firstname;
@@ -76,7 +111,7 @@ public class ContactData {
         return allPhones;
     }
     public File getPhoto() {
-        return photo;
+        return new File(photo);
     }
 
     public ContactData withId(int id) {
@@ -128,7 +163,7 @@ public class ContactData {
         return this;
     }
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
 
