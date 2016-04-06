@@ -60,7 +60,7 @@ public class GroupCreationTests extends TestBase {
         app.goTo().groupPage();
 
         // list of groups before
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
 
         // create a group
         app.group().create(group);
@@ -69,7 +69,7 @@ public class GroupCreationTests extends TestBase {
         assertThat(app.group().count(), equalTo(before.size() + 1));
 
         // list of groups after
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         // new id is max id, so find max
         //int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
@@ -86,7 +86,7 @@ public class GroupCreationTests extends TestBase {
         app.goTo().groupPage();
 
         // list of groups before
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
 
         // create a group
         GroupData group = new GroupData().withName("test2'");
@@ -96,7 +96,7 @@ public class GroupCreationTests extends TestBase {
         assertThat(app.group().count(), equalTo(before.size()));
 
         // list of groups after
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         // compare new and old lists
         assertThat(after, equalTo(before));

@@ -12,22 +12,18 @@ public class GroupDeletionTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions(){
-
-        // go to group page
+        // go to group page and create group if there is no groups
         app.goTo().groupPage();
-
-        // if there are no groups - create one
-        if (app.group().all().size() == 0){
+        if (app.db().groups().size() == 0) {
             app.group().create(new GroupData().withName("test1"));
         }
-
     }
 
     @Test
     public void testGroupDeletion() {
 
         // list of groups before
-        Groups before = app.group().all();
+        Groups before = app.db().groups();
 
         // preconditions are present, set is not empty
         // random group
@@ -40,7 +36,7 @@ public class GroupDeletionTests extends TestBase {
         assertThat(app.group().count(), equalTo(before.size() - 1));
 
         // list of groups after
-        Groups after = app.group().all();
+        Groups after = app.db().groups();
 
         // compare sets of groups
         assertThat(after, equalTo(before.without(deletedGroup)));
