@@ -59,15 +59,15 @@ public class ContactCreationTests extends TestBase{
         app.goTo().homePage();
 
         // list of contacts before
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
 
         // go to "add new" tab
-        app.goTo().goToContactPage();
+        app.goTo().contactPage();
 
         File photo = new File("src/test/resources/picture.jpg");
 
         // type all information in contact form
-        app.contact().create(contact);
+        app.contact().create(contact.withPhoto(photo));
 
         // go to home page
         app.goTo().homePage();
@@ -76,7 +76,7 @@ public class ContactCreationTests extends TestBase{
         assertThat(app.contact().count(), equalTo(before.size() + 1));
 
         // set of contacts after
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
 
         // find max id (from checkboxes)
         int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();

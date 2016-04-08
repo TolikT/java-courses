@@ -23,7 +23,7 @@ public class ContactInformationTests extends TestBase{
         // go to home page
         app.goTo().homePage();
 
-        contact = app.contact().all().iterator().next();
+        contact = app.db().contacts().iterator().next();
         contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
 
     }
@@ -35,7 +35,7 @@ public class ContactInformationTests extends TestBase{
         app.goTo().homePage();
 
         // if there are no groups - create one
-        if (app.contact().all().size() == 0){
+        if (app.db().contacts().size() == 0){
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
                     .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
         }
@@ -68,7 +68,7 @@ public class ContactInformationTests extends TestBase{
     }
 
     private String mergeDetails(ContactData contact) {
-        return Arrays.asList(contact.getFirstname()+" "+contact.getMiddlename()+" "+contact.getLastname(),
+        return Arrays.asList(contact.getFirstname()+" "+contact.getLastname(),
                 contact.getAddress(), cleanedSpaces(contact.getHomePhone()), cleanedSpaces(contact.getMobilePhone()),
                 cleanedSpaces(contact.getWorkPhone()), cleanedEmail(contact.getEmail()))
                 .stream().filter((s) -> ! s.equals(""))

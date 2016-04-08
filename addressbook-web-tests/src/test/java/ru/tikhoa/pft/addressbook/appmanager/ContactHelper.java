@@ -19,17 +19,23 @@ public class ContactHelper extends HelperBase{
     }
 
     public void fillContactForm(ContactData contactData, boolean creation) {
+
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("middlename"), contactData.getMiddlename());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("nickname"), contactData.getNicktname());
         type(By.name("email"), contactData.getEmail());
-        //type(By.name("address2"), contactData.getAddress());
-        attach(By.name("photo"), contactData.getPhoto());
+        type(By.name("home"), contactData.getHomePhone());
+        type(By.name("work"), contactData.getWorkPhone());
+        type(By.name("mobile"), contactData.getMobilePhone());
+        type(By.name("address"), contactData.getAddress());
+        if (contactData.getPhoto() != null) {
+            attach(By.name("photo"), contactData.getPhoto());
+        }
 
-        if (creation){
+        if (creation && contactData.getGroup() != null){
             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        } else {
+        } else if (!creation){
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
 
@@ -176,4 +182,5 @@ public class ContactHelper extends HelperBase{
         wd.navigate().back();
         return visibleText;
     }
+
 }

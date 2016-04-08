@@ -16,10 +16,11 @@ public class ContactModificationTests extends TestBase{
         // go to home page
         app.goTo().homePage();
 
-        // if there are no groups - create one
-        if (app.contact().all().size() == 0){
+        // if there are no contacts - create one
+        if (app.db().contacts().size() == 0){
+            app.goTo().contactPage();
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
-                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com"));
+                    .withEmail("anatoly.tikhomirov@emc.com"));
         }
 
     }
@@ -28,7 +29,7 @@ public class ContactModificationTests extends TestBase{
     public void testContactModification() {
 
         // list of contacts before
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
 
         // preconditions are present, set is not empty
         // random contact
@@ -36,7 +37,9 @@ public class ContactModificationTests extends TestBase{
 
         // modify with created data
         ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("Anatoly").withLastname("Tikhomirov")
-                .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP");
+                .withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP");
+
+        app.goTo().homePage();
 
         app.contact().modify(modifiedContact.getId(), contact);
 
@@ -47,7 +50,7 @@ public class ContactModificationTests extends TestBase{
         assertThat(app.contact().count(), equalTo(before.size()));
 
         // set of contacts after
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
 
         // check equality of sets
         assertThat(before.without(modifiedContact).withAdded(contact), equalTo(after));
