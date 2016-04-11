@@ -85,6 +85,8 @@ public class ContactCreationTests extends TestBase{
         contact.withId(max);
         assertThat(after, equalTo(before.withAdded(contact)));
 
+        verifyContactListInUI();
+
     }
 
 }

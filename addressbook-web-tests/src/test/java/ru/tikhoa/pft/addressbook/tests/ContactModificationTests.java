@@ -37,7 +37,8 @@ public class ContactModificationTests extends TestBase{
 
         // modify with created data
         ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("Anatoly").withLastname("Tikhomirov")
-                .withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP");
+                .withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP")
+                .withHomePhone("111").withMobilePhone("222").withWorkPhone("333");
 
         app.goTo().homePage();
 
@@ -54,6 +55,8 @@ public class ContactModificationTests extends TestBase{
 
         // check equality of sets
         assertThat(before.without(modifiedContact).withAdded(contact), equalTo(after));
+
+        verifyContactListInUI();
     }
 
 }

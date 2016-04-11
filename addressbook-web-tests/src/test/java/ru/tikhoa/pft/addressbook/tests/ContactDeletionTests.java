@@ -18,8 +18,9 @@ public class ContactDeletionTests extends TestBase{
 
         // if there are no groups - create one
         if (app.db().contacts().size() == 0){
+            app.goTo().contactPage();
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
-                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
+                    .withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
         }
 
     }
@@ -33,6 +34,9 @@ public class ContactDeletionTests extends TestBase{
         // preconditions are present, set is not empty
         // random contact
         ContactData deletedContact = before.iterator().next();
+
+        // go to home page
+        app.goTo().homePage();
 
         // delete a contact
         app.contact().delete(deletedContact);
@@ -48,6 +52,8 @@ public class ContactDeletionTests extends TestBase{
 
         // compare lists
         assertThat(after, equalTo(before.without(deletedContact)));
+
+        verifyContactListInUI();
 
     }
 

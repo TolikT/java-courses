@@ -36,8 +36,13 @@ public class ContactInformationTests extends TestBase{
 
         // if there are no groups - create one
         if (app.db().contacts().size() == 0){
+            app.goTo().contactPage();
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")
-                    .withMiddlename("Vladimirovich").withEmail("anatoly.tikhomirov@emc.com").withAddress("SaintP"));
+                    .withEmail("anatoly.tikhomirov@emc.com")
+                    .withHomePhone("111")
+                    .withMobilePhone("222")
+                    .withWorkPhone("333")
+                    .withAddress("SaintP"));
         }
 
     }
@@ -59,6 +64,11 @@ public class ContactInformationTests extends TestBase{
                 equalTo(mergeDetails(contactInfoFromEditForm)));
     }
 
+    @Test()
+    public void testContactUI() {
+        verifyContactListInUI();
+    }
+
 
     private String mergePhones(ContactData contact) {
         return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone())
@@ -72,7 +82,7 @@ public class ContactInformationTests extends TestBase{
                 contact.getAddress(), cleanedSpaces(contact.getHomePhone()), cleanedSpaces(contact.getMobilePhone()),
                 cleanedSpaces(contact.getWorkPhone()), cleanedEmail(contact.getEmail()))
                 .stream().filter((s) -> ! s.equals(""))
-                .collect(Collectors.joining("\n")) + "\n";
+                .collect(Collectors.joining("\n"));
     }
 
     private static String cleanedPhone(String phone){

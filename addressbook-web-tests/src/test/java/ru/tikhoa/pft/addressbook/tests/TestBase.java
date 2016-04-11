@@ -8,6 +8,8 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import ru.tikhoa.pft.addressbook.appmanager.ApplicationManager;
+import ru.tikhoa.pft.addressbook.model.ContactData;
+import ru.tikhoa.pft.addressbook.model.Contacts;
 import ru.tikhoa.pft.addressbook.model.GroupData;
 import ru.tikhoa.pft.addressbook.model.Groups;
 
@@ -52,6 +54,21 @@ public class TestBase {
             Groups uiGroups = app.group().all();
             assertThat(uiGroups, equalTo(dbGroups.stream().map((g) -> new GroupData()
                     .withId(g.getId()).withName(g.getName()))
+                    .collect(Collectors.toSet())));
+        }
+    }
+
+    public void verifyContactListInUI() {
+        // get system property
+        if (Boolean.getBoolean("verifyUI")) {
+            Contacts dbContacts = app.db().contacts();
+            Contacts uiContacts = app.contact().all();
+            assertThat(uiContacts, equalTo(dbContacts.stream().map((c) -> new ContactData()
+                    .withId(c.getId()).withFirstname(c.getFirstname()).withLastname(c.getLastname())
+                    .withAllPhones(String.format("%s\n%s\n%s",
+                            c.getHomePhone(), c.getMobilePhone(), c.getWorkPhone()))
+                    .withEmail(c.getEmail())
+                    .withAddress(c.getAddress()))
                     .collect(Collectors.toSet())));
         }
     }
