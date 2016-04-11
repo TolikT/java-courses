@@ -77,6 +77,9 @@ public class GroupCreationTests extends TestBase {
 
         // compare new and old lists
         assertThat(after, equalTo(before.withAdded(group.withId(max))));
+
+        verifyGroupListInUI();
+
     }
 
     @Test

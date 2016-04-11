@@ -41,6 +41,8 @@ public class GroupDeletionTests extends TestBase {
         // compare sets of groups
         assertThat(after, equalTo(before.without(deletedGroup)));
 
+        verifyGroupListInUI();
+
     }
 
 }
