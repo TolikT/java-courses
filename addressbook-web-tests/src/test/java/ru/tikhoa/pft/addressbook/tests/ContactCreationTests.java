@@ -3,10 +3,13 @@ package ru.tikhoa.pft.addressbook.tests;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.tikhoa.pft.addressbook.model.ContactData;
 import ru.tikhoa.pft.addressbook.model.Contacts;
+import ru.tikhoa.pft.addressbook.model.GroupData;
+import ru.tikhoa.pft.addressbook.model.Groups;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,8 +56,20 @@ public class ContactCreationTests extends TestBase{
         }
     }
 
+    @BeforeClass
+    public void ensurePreconditions(){
+        // go to group page and create group if there is no groups
+        app.goTo().groupPage();
+        if (app.db().groups().size() == 0) {
+            app.group().create(new GroupData().withName("test1"));
+        }
+    }
+
     @Test(dataProvider = "validContactsFromJson")
     public void testContactCreation(ContactData contact) {
+
+        Groups groups = app.db().groups();
+        File photo = new File("src/test/resources/picture.jpg");
 
         app.goTo().homePage();
 
@@ -64,10 +79,8 @@ public class ContactCreationTests extends TestBase{
         // go to "add new" tab
         app.goTo().contactPage();
 
-        File photo = new File("src/test/resources/picture.jpg");
-
         // type all information in contact form
-        app.contact().create(contact.withPhoto(photo));
+        app.contact().create(contact.withPhoto(photo).inGroup(groups.iterator().next()));
 
         // go to home page
         app.goTo().homePage();
