@@ -36,7 +36,7 @@ public class ContactToAndFromGroupTests extends TestBase{
     public void testContactAdditionAndRemoving() {
 
         // select group to add contact to it
-        String groupName = app.db().groups().iterator().next().getName();
+        GroupData group = app.db().groups().iterator().next();
 
         // list of contacts
         Contacts contacts = app.db().contacts();
@@ -48,15 +48,16 @@ public class ContactToAndFromGroupTests extends TestBase{
         app.goTo().homePage();
 
         // add contact to group
-        app.contact().addToGroup(addedContact, groupName);
+        app.contact().addToGroup(addedContact, group.getName());
 
         // go to home page
         app.goTo().homePage();
 
-        app.contact().filterByGroupName(groupName);
+        app.contact().filterByGroupName(group.getName());
 
         // check that contact in group
         assertThat(app.contact().all().contains(addedContact), equalTo(true));
+        assertThat(app.db().getContactById(addedContact.getId()).getGroups().contains(group), equalTo(true));
 
         // remove contact from group
         app.contact().removeFromGroup(addedContact);
@@ -69,9 +70,11 @@ public class ContactToAndFromGroupTests extends TestBase{
         // check that contact is present in list
         assertThat(app.contact().all().contains(addedContact), equalTo(true));
 
-        app.contact().filterByGroupName(groupName);
+        app.contact().filterByGroupName(group.getName());
 
         // check that contact is not in group
         assertThat(app.contact().all().contains(addedContact), equalTo(false));
+        assertThat(app.db().getContactById(addedContact.getId()).getGroups().contains(group), equalTo(false));
+
     }
 }

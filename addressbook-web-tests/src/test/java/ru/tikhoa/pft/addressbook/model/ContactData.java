@@ -28,10 +28,6 @@ public class ContactData {
     @Column(name="lastname")
     private String lastname;
 
-    @XStreamOmitField
-    @Transient
-    private String nickname;
-
     @Expose
     @XStreamOmitField
     @Column(name="email")
@@ -44,7 +40,7 @@ public class ContactData {
     @Type(type="text")
     private String address;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "address_in_groups",
             joinColumns = @JoinColumn(name="id"),
             inverseJoinColumns = @JoinColumn(name="group_id"))
@@ -139,9 +135,6 @@ public class ContactData {
     public String getLastname(){
         return lastname;
     }
-    public String getNicktname(){
-        return nickname;
-    }
     public String getEmail(){
         return email;
     }
@@ -174,6 +167,7 @@ public class ContactData {
     public Groups getGroups() {
         return new Groups(groups);
     }
+
 
     public ContactData withId(int id) {
         this.id = id;
