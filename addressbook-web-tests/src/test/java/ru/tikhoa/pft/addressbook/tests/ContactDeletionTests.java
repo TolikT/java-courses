@@ -16,7 +16,7 @@ public class ContactDeletionTests extends TestBase{
         // go to home page
         app.goTo().homePage();
 
-        // if there are no groups - create one
+        // if there are no contacts - create one
         if (app.db().contacts().size() == 0){
             app.goTo().contactPage();
             app.contact().create(new ContactData().withFirstname("Anatoly").withLastname("Tikhomirov")

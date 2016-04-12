@@ -125,9 +125,9 @@ public class ContactHelper extends HelperBase{
     // return set of contacts on the page
     public Contacts all() {
 
-        if (contactCache != null) {
-            return new Contacts(contactCache);
-        }
+        //if (contactCache != null) {
+        //    return new Contacts(contactCache);
+        //}
 
         contactCache = new Contacts();
         WebElement table = wd.findElement(By.xpath("//*[@id=\"maintable\"]"));
@@ -140,9 +140,14 @@ public class ContactHelper extends HelperBase{
             String address = cells.get(3).getText();
             String email = cells.get(4).getText();
             String allPhones = cells.get(5).getText();
+            String allPhonesArray[] = allPhones.split("\\n");
+            String homePhone = allPhonesArray[0];
+            String workPhone = allPhonesArray[2];
+            String mobilePhone = allPhonesArray[1];
 
             contactCache.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName)
-                    .withAllPhones(allPhones).withEmail(email).withAddress(address));
+                    .withAllPhones(allPhones).withEmail(email).withAddress(address)
+                    .withMobilePhone(mobilePhone).withWorkPhone(workPhone).withHomePhone(homePhone));
         }
         return contactCache;
     }
@@ -184,4 +189,20 @@ public class ContactHelper extends HelperBase{
         return visibleText;
     }
 
+    public void addToGroup(ContactData contact, String groupName) {
+        wd.findElement(By.id(String.format("%s", contact.getId()))).click();
+
+        new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(groupName);
+
+        wd.findElement(By.name("add")).click();
+    }
+
+    public void filterByGroupName(String name) {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText(name);
+    }
+
+    public void removeFromGroup(ContactData contact) {
+        wd.findElement(By.id(String.format("%s", contact.getId()))).click();
+        wd.findElement(By.name("remove")).click();
+    }
 }
