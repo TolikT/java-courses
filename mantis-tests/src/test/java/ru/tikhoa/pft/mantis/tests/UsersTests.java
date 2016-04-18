@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertTrue;
 
-public class RegistrationTests extends TestBase{
+public class UsersTests extends TestBase{
 
     @BeforeClass
     public void startMailServer() {
