@@ -18,8 +18,11 @@ public class ApplicationManager {
     private WebDriver wd;
 
     private String browser;
-    private RegistrationHelper registrationHelper;
     private FtpHelper ftpHelper;
+    private MailHelper mailHelper;
+    private SessionHelper sessionHelper;
+    private NavigationHelper navigationHelper;
+    private UsersHelper usersHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -29,6 +32,7 @@ public class ApplicationManager {
     public void init() throws IOException {
         String target = System.getProperty("target", "local");
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+        sessionHelper = new SessionHelper(this);
     }
 
     public void stop() {
@@ -45,18 +49,39 @@ public class ApplicationManager {
         return properties.getProperty(key);
     }
 
-    public RegistrationHelper registration() {
-        if (registrationHelper == null) {
-            registrationHelper = new RegistrationHelper(this);
-        }
-        return registrationHelper;
-    }
-
     public FtpHelper ftp() {
         if (ftpHelper == null) {
             ftpHelper = new FtpHelper(this);
         }
         return ftpHelper;
+    }
+
+    public MailHelper mail() {
+        if (mailHelper == null) {
+            mailHelper = new MailHelper(this);
+        }
+        return mailHelper;
+    }
+
+    public SessionHelper session() {
+        if (sessionHelper == null) {
+            sessionHelper = new SessionHelper(this);
+        }
+        return sessionHelper;
+    }
+
+    public NavigationHelper goTo() {
+        if (navigationHelper == null) {
+            navigationHelper = new NavigationHelper(this);
+        }
+        return navigationHelper;
+    }
+
+    public UsersHelper users() {
+        if (usersHelper == null) {
+            usersHelper = new UsersHelper(this);
+        }
+        return usersHelper;
     }
 
     public WebDriver getDriver() {
