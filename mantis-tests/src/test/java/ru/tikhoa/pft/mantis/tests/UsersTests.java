@@ -1,7 +1,6 @@
 package ru.tikhoa.pft.mantis.tests;
 
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -9,6 +8,7 @@ import org.testng.annotations.Test;
 import ru.lanwen.verbalregex.VerbalExpression;
 import ru.tikhoa.pft.mantis.Model.MailMessage;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class UsersTests extends TestBase{
     }
 
     @Test
-    public void testResetPassword() throws IOException, MessagingException {
+    public void testResetPassword() throws IOException, MessagingException, InterruptedException {
         String password = "password";
         app.session().login(app.getProperty("web.adminLogin"), app.getProperty("web.adminPassword"));
         app.goTo().manageUsers();

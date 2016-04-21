@@ -1,11 +1,11 @@
 package ru.tikhoa.pft.mantis.appmanager;
 
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 import ru.tikhoa.pft.mantis.Model.MailMessage;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
