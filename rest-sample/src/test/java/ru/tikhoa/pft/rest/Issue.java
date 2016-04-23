@@ -6,6 +6,17 @@ public class Issue {
     private String subject;
     private String description;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public Issue withStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    private String status;
+
     public String getSubject() {
         return subject;
     }
@@ -34,6 +45,16 @@ public class Issue {
     }
 
     @Override
+    public String toString() {
+        return "Issue{" +
+                "id=" + id +
+                ", subject='" + subject + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -42,7 +63,8 @@ public class Issue {
 
         if (id != issue.id) return false;
         if (subject != null ? !subject.equals(issue.subject) : issue.subject != null) return false;
-        return description != null ? description.equals(issue.description) : issue.description == null;
+        if (description != null ? !description.equals(issue.description) : issue.description != null) return false;
+        return status != null ? status.equals(issue.status) : issue.status == null;
 
     }
 
@@ -51,15 +73,8 @@ public class Issue {
         int result = id;
         result = 31 * result + (subject != null ? subject.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Issue{" +
-                "id=" + id +
-                ", subject='" + subject + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }
