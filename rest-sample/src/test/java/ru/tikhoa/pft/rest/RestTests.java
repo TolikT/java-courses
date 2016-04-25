@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class RestTests {
 
     @Test
     public void testCreateIssue() throws IOException {
+        isIssueOpen(1);
         Set<Issue> oldIssues = getIssues();
         Issue newIssue = new Issue().withSubject("Test issue").withDescription("New test issue");
         int issueId = createIssue(newIssue);
@@ -46,5 +48,22 @@ public class RestTests {
                 .returnContent().asString();
         JsonElement parsed = new JsonParser().parse(json);
         return parsed.getAsJsonObject().get("issue_id").getAsInt();
+    }
+
+    public boolean isIssueOpen(int issueId) throws IOException {
+        String json = getExecutor().execute(Request.Get(String.format("http://demo.bugify.com/api/issues/%s.json", issueId)))
+                .returnContent().asString();
+        JsonElement parsed = new JsonParser().parse(json);
+        JsonElement issues = parsed.getAsJsonObject().get("issues");
+        JsonElement issue = issues.getAsJsonArray().get(0);
+        JsonElement issue_state= issue.getAsJsonObject().get("state_name");
+        String s = issue_state.getAsString();
+        return s == "Open";
+    }
+
+    public void skipIfNotFixed(int issueId) throws IOException {
+        if (isIssueOpen(issueId)) {
+            throw new SkipException("Ignored because of issue " + issueId);
+        }
     }
 }
